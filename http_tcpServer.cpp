@@ -137,14 +137,15 @@ namespace http
             if (bytesReceived < 0)
             {
                 exitWithError("Failed to receive bytes from client socket");
-
-                std::ostringstream ss;
-                ss << "Received Request from client \n\n";
-                log(ss.str());
-
-                sendResponse();
-                closesocket(m_new_socket);
             }
+
+            std::ostringstream ss;
+            ss << "Received Request from client \n\n";
+            log(ss.str());
+
+            sendResponse();
+
+            closesocket(m_new_socket);
         }
     }
 
@@ -163,7 +164,10 @@ namespace http
     {
         std::string htmlFile = "<!DOCTYPE html><html lang=\"en\"><body><h1> HOME </h1><p> Hello from your Server :) </p></body></html>";
         std::ostringstream ss;
-        ss << "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " << htmlFile.size() << "\n\n"
+        ss << "HTTP/1.1 200 OK\r\n"
+           << "Content-Type: text/html\r\n"
+           << "Content-Length: " << htmlFile.size() << "\r\n"
+           << "\r\n"
            << htmlFile;
 
         return ss.str();
